@@ -1,0 +1,672 @@
+#include<GL/gl.h>
+#include<GL/glu.h>
+#include<GL/glut.h>
+
+#include<stdio.h>
+
+
+void timer(int);
+void timer2(int);
+
+
+int  x_car =800, y_car=50;
+
+int x_t=480 ,y_t=5500;
+
+int s_x=885 , s_y=200 , s_y2=850,y=1300 ,y2=800;
+
+int speed=10;
+
+
+
+void init()
+{
+	glClearColor(1.0f,1.0f,1.0f,0.0f);
+	glColor3f(1,1,0);
+	glPointSize(25.0f);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0,1920,0,1080);
+}
+
+
+
+
+
+void road()
+{
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	
+	glBegin(GL_QUADS);
+	
+
+		glColor3f(100,100,100);
+		
+		glVertex2i(250,0);
+		glVertex2i(1700,0);
+		glVertex2i(1700,1300);
+		glVertex2i(250,1300);
+}
+
+
+
+void grass()
+{
+		
+	glBegin(GL_QUADS);
+	
+		//left
+		glColor3f(0,255,0);
+		
+		glVertex2i(0,0);
+		glVertex2i(250,0);
+		glVertex2i(250,1300);
+		glVertex2i(0,1300);	
+		
+		
+		glBegin(GL_QUADS);
+	
+		//right
+		glColor3f(0,255,0);
+		
+		glVertex2i(1700,0);
+		glVertex2i(2000,0);
+		glVertex2i(2000,1300);
+		glVertex2i(1700,1300);	
+}
+
+
+
+
+
+
+void stripes()
+{
+	
+	
+	glBegin(GL_QUADS);
+	
+
+		glColor3f(0,0,0);
+		
+		glVertex2i(s_x,s_y-200);
+		glVertex2i(s_x+20,s_y-200);
+		glVertex2i(s_x+20,s_y);
+		glVertex2i(s_x,s_y);
+		
+		
+		
+	glBegin(GL_QUADS);
+	
+
+		glColor3f(0,0,0);
+		
+		glVertex2i(s_x,s_y2-200);
+		glVertex2i(s_x+20,s_y2-200);
+		glVertex2i(s_x+20,s_y2);
+		glVertex2i(s_x,s_y2);
+		
+		if(s_y<0){s_y=1300;}
+		if(s_y2<0){s_y2=1300;}
+		
+			
+			
+}
+
+
+void car()
+{
+	
+	//body
+	glBegin(GL_QUADS);
+
+
+		glColor3ub(255,255,0);
+		
+		glVertex2i(x_car,y_car);
+		glVertex2i(x_car+170,y_car);
+		glVertex2i(x_car+170,y_car+350);
+		glVertex2i(x_car,y_car+350);
+		
+		
+		
+	//frontlightS
+		//Left
+		glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car,y_car+350);
+			glVertex2i(x_car+35,y_car+350);
+			glVertex2i(x_car+35,y_car+325);
+			glVertex2i(x_car,y_car+325);
+		
+	
+		//Right
+		glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car+170-35,y_car+350);
+			glVertex2i(x_car+170,y_car+350);
+			glVertex2i(x_car+170,y_car+325);
+			glVertex2i(x_car+170-35,y_car+325);
+		
+		
+		
+		
+	//BacklightS
+		//Left
+		glBegin(GL_QUADS);
+
+			glColor3ub(255,10,20);
+		
+			glVertex2i(x_car,y_car);
+			glVertex2i(x_car+45,y_car);
+			glVertex2i(x_car+45,y_car+20);
+			glVertex2i(x_car,y_car+20);
+	
+	
+		//Right
+		glBegin(GL_QUADS);
+
+			glColor3ub(255,10,20);
+		
+			glVertex2i(x_car+170-45,y_car);
+			glVertex2i(x_car+170,y_car);
+			glVertex2i(x_car+170,y_car+20);
+			glVertex2i(x_car+170-45,y_car+20);
+		
+		
+	
+	
+		//frontgaurd
+		glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+			
+			glVertex2i(x_car+45,y_car+350);
+			glVertex2i(x_car+170-45,y_car+350);
+			glVertex2i(x_car+170-45,y_car+340);
+			glVertex2i(x_car+45,y_car+340);
+		
+		
+		
+		
+	//bonnet
+		//left
+		glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car+44,y_car+320);
+			glVertex2i(x_car+46,y_car+320);
+			glVertex2i(x_car+44-15,y_car+320-50);
+			glVertex2i(x_car+46-15,y_car+320-50);
+		
+		
+		//right
+		glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car+170-46,y_car+320);
+			glVertex2i(x_car+170-44,y_car+320);
+			glVertex2i(x_car+170-46+15,y_car+320-50);
+			glVertex2i(x_car+170-44+15,y_car+320-50);	
+		
+		//line
+		glBegin(GL_QUADS);
+			
+			glColor3f(0,0,0);
+			
+			glVertex2i(x_car,y_car+265);
+			glVertex2i(x_car+170,y_car+265);
+			glVertex2i(x_car+170,y_car+267);
+			glVertex2i(x_car,y_car+267);
+			
+	/*
+	
+	Not working
+	
+	glBegin(GL_LINES);
+	
+		glColor3ub(0,0,0);
+		
+		glVertex2i(x_car+55,y_car+30);
+		glVertex2i(x_car+10,y_car+200);
+	*/
+			
+			
+			
+	//windshield
+	glBegin(GL_QUADS);
+
+		glColor3ub(85,206,255);
+		
+		glVertex2i(x_car+15,y_car+260);
+		glVertex2i(x_car+170-15,y_car+260);
+		glVertex2i(x_car+170-30,y_car+260-50);
+		glVertex2i(x_car+30,y_car+260-50);
+		
+	//Windows	
+		//LeftWindow
+		glBegin(GL_QUADS);
+				
+			glColor3ub(85,206,255);
+			glVertex2i(x_car+35,y_car+195);
+			glVertex2i(x_car+5,y_car+200+44);
+			glVertex2i(x_car+5,y_car+200-130);
+			glVertex2i(x_car+35,y_car+200-85);
+		
+			
+		//RightWindow
+		glBegin(GL_QUADS);
+
+			glColor3ub(85,206,255);
+			glVertex2i(x_car+170-35,y_car+195);
+			glVertex2i(x_car+170-5,y_car+200+44);
+			glVertex2i(x_car+170-5,y_car+200-130);
+			glVertex2i(x_car+170-35,y_car+200-85);
+			
+		//lines
+			//left
+			glBegin(GL_QUADS);
+				
+			glColor3f(0,0,0);
+			glVertex2i(x_car+35,y_car+195);
+			glVertex2i(x_car+5,y_car+195);
+			glVertex2i(x_car+5,y_car+195-2);
+			glVertex2i(x_car+35,y_car+195-2);
+			
+			glBegin(GL_QUADS);
+				
+			glColor3f(0,0,0);
+			glVertex2i(x_car+35,y_car+118);
+			glVertex2i(x_car+5,y_car+118);
+			glVertex2i(x_car+5,y_car+118-2);
+			glVertex2i(x_car+35,y_car+118-2);
+			
+			//right
+			glBegin(GL_QUADS);
+				
+			glColor3f(0,0,0);
+			glVertex2i(x_car+170-35,y_car+195);
+			glVertex2i(x_car+170-5,y_car+195);
+			glVertex2i(x_car+170-5,y_car+195-2);
+			glVertex2i(x_car+170-35,y_car+195-2);
+			
+			glBegin(GL_QUADS);
+				
+			glColor3f(0,0,0);
+			glVertex2i(x_car+170-35,y_car+118);
+			glVertex2i(x_car+170-5,y_car+118);
+			glVertex2i(x_car+170-5,y_car+118-2);
+			glVertex2i(x_car+170-35,y_car+118-2);
+			
+			
+			
+		
+		
+	//top
+	glBegin(GL_QUADS);
+
+		glColor3ub(255,255,0);
+		
+		glVertex2i(x_car+40,y_car+205);
+		glVertex2i(x_car+170-40,y_car+205);
+		glVertex2i(x_car+170-40,y_car+205-100);
+		glVertex2i(x_car+40,y_car+205-100);
+		
+			
+	
+	//backwindow
+	glBegin(GL_QUADS);
+
+		glColor3ub(85,206,255);
+		
+		glVertex2i(x_car+30,y_car+100);
+		glVertex2i(x_car+170-30,y_car+100);
+		glVertex2i(x_car+170-15,y_car+100-50);
+		glVertex2i(x_car+15,y_car+100-50);
+		
+	
+	
+	
+	//back
+	glBegin(GL_QUADS);
+
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_car,y_car+40);
+		glVertex2i(x_car+170,y_car+40);
+		glVertex2i(x_car+170,y_car+42);
+		glVertex2i(x_car,y_car+42);
+	
+	
+	//balcklines
+		//Left
+		glBegin(GL_QUADS);
+	
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car+50,y_car+35);
+			glVertex2i(x_car+52,y_car+35);
+			glVertex2i(x_car+62,y_car+10);
+			glVertex2i(x_car+60,y_car+10);
+			
+		//Right
+		glBegin(GL_QUADS);
+	
+			glColor3f(0,0,0);
+		
+			glVertex2i(x_car+170-50,y_car+35);
+			glVertex2i(x_car+170-52,y_car+35);
+			glVertex2i(x_car+170-62,y_car+10);
+			glVertex2i(x_car+170-60,y_car+10);
+	
+	
+	//Side view mirrors
+		//Left
+		glBegin(GL_QUADS);
+
+		glColor3f(0,0,0);
+		glVertex2i(x_car+2,y_car+240);
+		glVertex2i(x_car-10,y_car+235);
+		glVertex2i(x_car-10,y_car+240+10);
+		glVertex2i(x_car+2,y_car+240+20);
+		
+		//Right
+		glBegin(GL_QUADS);
+
+		glColor3f(0,0,0);
+		glVertex2i(x_car+170-2,y_car+240);
+		glVertex2i(x_car+170+10,y_car+235);
+		glVertex2i(x_car+170+10,y_car+240+10);
+		glVertex2i(x_car+170-	2,y_car+240+20);
+	
+		
+	//wheels
+		//Front
+			//left
+			glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+			glVertex2i(x_car+2,y_car+265);
+			glVertex2i(x_car-5,y_car+265);
+			glVertex2i(x_car-5,y_car+260+50);
+			glVertex2i(x_car+2,y_car+260+50);
+		
+			//right
+			glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+			glVertex2i(x_car+170-2,y_car+265);
+			glVertex2i(x_car+170+5,y_car+265);
+			glVertex2i(x_car+170+5,y_car+260+50);
+			glVertex2i(x_car+170-2,y_car+260+50);
+			
+		//Back
+			//left
+			glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+			glVertex2i(x_car+2,y_car+45);
+			glVertex2i(x_car-5,y_car+45);
+			glVertex2i(x_car-5,y_car+45+50);
+			glVertex2i(x_car+2,y_car+45+50);
+		
+			//right
+			glBegin(GL_QUADS);
+
+			glColor3f(0,0,0);
+			glVertex2i(x_car+170-2,y_car+50);
+			glVertex2i(x_car+170+5,y_car+50);
+			glVertex2i(x_car+170+5,y_car+45+50);
+			glVertex2i(x_car+170-2,y_car+45+50);
+			
+
+}
+
+
+void truck()
+{
+		
+		//front
+		glBegin(GL_QUADS);
+	
+		glColor3ub(204,204,204);
+		
+		glVertex2i(x_t-15,y_t);
+		glVertex2i(x_t+135,y_t);
+		glVertex2i(x_t+135,y_t+120);
+		glVertex2i(x_t-15,y_t+120);
+		
+		
+		//back
+		glBegin(GL_QUADS);
+	
+		glColor3ub(100,100,100);
+		
+		glVertex2i(x_t-55,y_t+120);
+		glVertex2i(x_t+120+55,y_t+120);
+		glVertex2i(x_t+120+55,y_t+120+350);
+		glVertex2i(x_t-55,y_t+120+350);
+		
+		
+		
+		//lines
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t-20,y_t+120);
+		glVertex2i(x_t-23,y_t+120);
+		glVertex2i(x_t-23,y_t+120+350);
+		glVertex2i(x_t-20,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t-5,y_t+120);
+		glVertex2i(x_t-2,y_t+120);
+		glVertex2i(x_t-2,y_t+120+350);
+		glVertex2i(x_t-5,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+15,y_t+120);
+		glVertex2i(x_t+18,y_t+120);
+		glVertex2i(x_t+18,y_t+120+350);
+		glVertex2i(x_t+15,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+15+20,y_t+120);
+		glVertex2i(x_t+18+20,y_t+120);
+		glVertex2i(x_t+18+20,y_t+120+350);
+		glVertex2i(x_t+15+20,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+55,y_t+120);
+		glVertex2i(x_t+58,y_t+120);
+		glVertex2i(x_t+58,y_t+120+350);
+		glVertex2i(x_t+55,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+55+20,y_t+120);
+		glVertex2i(x_t+58+20,y_t+120);
+		glVertex2i(x_t+58+20,y_t+120+350);
+		glVertex2i(x_t+55+20,y_t+120+350);
+		
+		glBegin(GL_QUADS);
+	
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+55+20+20,y_t+120);
+		glVertex2i(x_t+58+20+20,y_t+120);
+		glVertex2i(x_t+58+20+20,y_t+120+350);
+		glVertex2i(x_t+55+20+20,y_t+120+350);
+		
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+95,y_t+120);
+		glVertex2i(x_t+98,y_t+120);
+		glVertex2i(x_t+98,y_t+120+350);
+		glVertex2i(x_t+95,y_t+120+350);
+		
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+95+20,y_t+120);
+		glVertex2i(x_t+98+20,y_t+120);
+		glVertex2i(x_t+98+20,y_t+120+350);
+		glVertex2i(x_t+95+20,y_t+120+350);
+		
+		glColor3f(0,0,0);
+		
+		glVertex2i(x_t+95+20+20,y_t+120);
+		glVertex2i(x_t+98+20+20,y_t+120);
+		glVertex2i(x_t+98+20+20,y_t+120+350);
+		glVertex2i(x_t+95+20+20,y_t+120+350);
+			
+		
+}
+
+
+
+
+
+
+
+void MyDisplay()
+{	 
+
+	road();
+	
+	grass();
+
+	stripes();
+	
+	car();
+	
+	truck();
+	
+	glEnd();
+	
+	glutSwapBuffers();
+}
+
+
+
+
+
+void keyboard(unsigned char key, int x, int y )
+{
+
+    if( key=='a' || key=='A')
+    {
+        x_car=x_car-20;
+    }
+  
+    
+    if( key=='d' || key=='D')
+    {
+        x_car=x_car+20;
+    }    
+    
+    if( key=='s' || key=='S')
+    {
+        
+        if (speed>10){speed=speed-5;}  
+    }
+}
+
+void mouse(int button , int state, int x, int y)
+{
+	if (button==GLUT_LEFT_BUTTON)
+	{
+		if (speed<60){speed=speed+10;}
+	}
+	
+	
+	if (button==GLUT_RIGHT_BUTTON)
+	{
+		if (speed>10){speed=speed-5;}
+	}
+}
+
+
+
+
+
+
+int main (int argc, char **argv) 
+{
+	glutInit( &argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
+	glutInitWindowSize(1920,1080);
+	glutInitWindowPosition(50,50);
+	glutCreateWindow("MiniGame");
+	init();
+	glutDisplayFunc(MyDisplay);
+	glutKeyboardFunc (keyboard);
+	glutMouseFunc (mouse);
+	glutTimerFunc(0,timer,0);
+	glutTimerFunc(0,timer2,0);
+	glutMainLoop();
+	return 0;
+	
+}
+
+void timer(int a)
+{
+	if (speed !=0)
+	{
+		s_y=s_y-speed;
+		s_y2=s_y2-speed;
+		
+		
+		y_t =y_t-speed;
+	
+		if (y_t < -1000)
+		{
+			x_t=rand()%1400;
+			while (x_t<400 ){x_t=rand()%1400;}
+			int i=3000+speed*20;
+			y_t=i;
+		}
+	}
+	
+	
+	if (x_car > x_t-1 && x_car < x_t+175 && y_car+170>=y_t && y_t>100)	{speed=0;}
+	if (x_car+150 > x_t-1 && x_car+170 < x_t+175 && y_car+170>=y_t && y_t>100)	{speed=0;}
+	
+	
+	
+	glutPostRedisplay();
+	glutTimerFunc(1000/60,timer,0);
+	
+	
+	
+	
+}
+
+void timer2(int b)
+{	
+	if (speed<70 || speed!=0){speed=speed+1;}
+	glutTimerFunc(1000,timer2,0);
+}
